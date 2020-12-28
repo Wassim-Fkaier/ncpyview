@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 """
 Created on Sun Oct 27 17:27:08 2020
-This module create an interactive aplication using the streamlit framework
+This module creates an interactive aplication using the streamlit framework
 """
 __author__ = "Wassim Fkaier"
 __maintainer__ = "Wassim Fkaier"
@@ -18,14 +18,14 @@ import streamlit as st
 import xarray
 import plotly.express as plotly_express
 import plotly.graph_objects as go
-from ncpyview.readparam import parserarg
 import json
 import pkg_resources
+from ncpyview.readparam import parserarg
 
 @st.cache(hash_funcs={xarray.core.dataset.Dataset: id}, allow_output_mutation=True)
 def readnc(filename):
     """
-    This function read a netcdf file and return it as a bytes object.
+    This function reads a netcdf file and returns it as a Dataset object.
 
     Parameters
     ----------
@@ -43,7 +43,7 @@ def readnc(filename):
 
 class Ncpyviewer:
     """
-    This class method read data from netcdf, calculate the statistics
+    This class method reads data from netcdf, calculates the statistics
     and visualize them.
     """
 
@@ -63,8 +63,8 @@ class Ncpyviewer:
         Parameters
         ----------
         files_names : dict
-            A dictionnary contaning the netcdf files paths or Bytes objects 
-            in his values for the correspndant netcdf files names as keys.
+            A dictionnary which contanins the netcdf files paths 
+            or Bytes objects 
         dataset : TYPE, optional
             DESCRIPTION. The default is None.
 
@@ -81,9 +81,9 @@ class Ncpyviewer:
     def open_dataset(cls):
         """
         Classmethod to construct an instance object of type Ncpyviewer.
-        It uploads files from the disk and can also parse the files paths
+        It uploads files from the disk and can also parses the files paths
         from the command line as an arguments of the program
-        and return an instance of the Ncpyviewer class object.
+        and returns an instance of the Ncpyviewer class object.
 
         Parameters
         ----------
@@ -153,7 +153,7 @@ class Ncpyviewer:
 
     def show_file_attributes(self):
         """
-        This method render a table which contains the global file attributes
+        This method renders a table which contains the global file attributes
 
         Returns
         -------
@@ -173,7 +173,7 @@ class Ncpyviewer:
 
     def select_variable(self):
         """
-        This method select a variable from all the dataset 's variables 
+        This method selects a variable from all the dataset 's variables 
         
 
         Returns
@@ -189,7 +189,7 @@ class Ncpyviewer:
 
     def show_variable_attributes(self):
         """
-        This method render a table which contains the variable 's attributes
+        This method renders a table which contains the variable 's attributes
 
         Raises
         ------
@@ -522,7 +522,7 @@ class Ncpyviewer:
                 )
                 if self.dataset.variables[axe].shape[0] != dataset.shape[stat_axis]:
                     st.error(
-                        f"PLease choose an absice which his lenght equal to the number of the time series of {self.variable} variable"
+                        f"Shape mismatch"
                     )
                     st.stop()
                 if st.checkbox("min"):
@@ -551,7 +551,7 @@ class Ncpyviewer:
 
 def main():
     """
-    Main function which excecute all the process
+    Main function which excecutes all the process
 
     Returns
     -------
