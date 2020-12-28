@@ -20,6 +20,6 @@ setuptools.setup(
         "Operating System :: OS Independent",
     ],
     python_requires=">=3.6",
-    install_requires=[],
+    install_requires=['numpy', 'streamlit', 'xarray', 'plotly'],
     entry_points={"console_scripts": ["ncpyview = %s.main:main" % package_name]},
 )
