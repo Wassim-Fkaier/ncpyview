@@ -46,5 +46,6 @@ def parsearg_func():
 
     return args_dict
 
+
 if __name__ == "__main__":
     print(parsearg_func())

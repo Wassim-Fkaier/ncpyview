@@ -13,6 +13,7 @@ import pkg_resources
 import subprocess
 from .readparam import parserarg
 
+
 def main():
     """
     This is main function excecute the ncpyview program
@@ -35,6 +36,5 @@ def main():
         )
     else:
         subprocess.check_call(
-            f"streamlit run {script_path}",
-            shell=True, stderr=subprocess.STDOUT
+            f"streamlit run {script_path}", shell=True, stderr=subprocess.STDOUT
         )
