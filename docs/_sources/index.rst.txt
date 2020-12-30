@@ -18,3 +18,62 @@ Indices and tables
 * :ref:`genindex`
 * :ref:`modindex`
 * :ref:`search`
+
+
+Description
+===========
+
+ncpyview is an interactive web application to read data from netcdf files, process and visualize them.
+
+
+.. image:: figures/ncpyview_img.png
+
+
+Installation
+============
+
+- Open a terminal in linux operating system
+
+
+- Clone the repository to your work disk;
+
+.. code-block:: bash
+        
+        git clone https://github.com/Wassim-Fkaier/ncpyview.git 
+
+- Change the directory to the newly cloned repository ncpyview;
+
+.. code-block:: bash
+
+        cd ncpyview
+
+- Install the program by taping;
+
+.. code-block:: bash
+
+        make install
+
+Run the application
+===================
+
+Open a terminal and tape;
+
+.. code-block:: bash
+
+        ncpyview
+
+This will open the application on the browser.
+
+Now the files can be uploaded to read and visualize data.
+
+
+
+Table of contents
+=================
+
+.. toctree::
+   :name: mastertoc
+   :maxdepth: 2
+
+   exemples
+

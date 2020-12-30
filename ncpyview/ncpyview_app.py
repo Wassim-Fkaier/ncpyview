@@ -22,6 +22,7 @@ import json
 import pkg_resources
 from ncpyview.readparam import parserarg
 
+
 @st.cache(hash_funcs={xarray.core.dataset.Dataset: id}, allow_output_mutation=True)
 def readnc(filename):
     """
@@ -47,7 +48,9 @@ class Ncpyviewer:
     and visualize them.
     """
 
-    configfile_path = pkg_resources.resource_filename(__package_name__, os.path.join("etc", "config.json"))
+    configfile_path = pkg_resources.resource_filename(
+        __package_name__, os.path.join("etc", "config.json")
+    )
     # Dictionnary which contains functions to compute statistics
     dict_funcs = {
         "min": lambda dataset, axis: np.nanmin(dataset, axis=axis),
@@ -76,6 +79,22 @@ class Ncpyviewer:
         """
 
         self.dataset = dataset
+
+    @property
+    def dataset(self):
+        """Getter"""
+        return self.__dataset
+
+    @dataset.setter
+    def dataset(self, dataset):
+        """Setter"""
+        if not list(dataset.variables):
+            raise ValueError("Empty dataset")
+        if not hasattr(dataset, "dims"):
+            raise ValueError("The dataset has not the attribute dims")
+        if not list(dataset.dims):
+            raise ValueError("The dataset has no dimesnions")
+        self.__dataset = dataset
 
     @classmethod
     def open_dataset(cls):
@@ -138,7 +157,7 @@ class Ncpyviewer:
 
         st.sidebar.title("**:panda_face: ncpyview app:panda_face:**")
         st.sidebar.date_input("Date", datetime.date.today())
-        
+
     def read_config(self):
         """
         Read config file
@@ -148,7 +167,7 @@ class Ncpyviewer:
         None.
 
         """
-        with open(self.configfile_path, 'r') as config_file:
+        with open(self.configfile_path, "r") as config_file:
             self.configfile = json.load(config_file)
 
     def show_file_attributes(self):
@@ -165,16 +184,13 @@ class Ncpyviewer:
         # Get all the global attributes of the file and show them in a table
         st.table(
             pd.DataFrame(
-                data={
-                    attr: [eval(f"self.dataset.{attr}")] for attr in self.dataset.attrs
-                }
+                data={attr: [self.dataset.attrs[attr]] for attr in self.dataset.attrs}
             )
         )
 
     def select_variable(self):
         """
-        This method selects a variable from all the dataset 's variables 
-        
+        This method selects a variable from all the dataset 's variables
 
         Returns
         -------
@@ -284,15 +300,27 @@ class Ncpyviewer:
             st.plotly_chart(fig)
         # The variable has more than 1 dimension
         else:
+            if 1 in self.dataset[self.variable].shape:
+                where_1d = self.dataset[self.variable].shape.index(1)
+                if where_1d == 0:
+                    self.dataset[self.variable] = self.dataset[self.variable][0]
+                elif where_1d == 1:
+                    self.dataset[self.variable] = self.dataset[self.variable][:, 0, :]
+                else:
+                    self.dataset[self.variable] = self.dataset[self.variable][:, :, 0]
+
             with st.beta_container():
                 # 2D variable
-                if len(self.dataset.variables[self.variable].shape) == 2:
+                if (
+                    len(self.dataset.variables[self.variable].shape) == 2
+                    or 1 in self.dataset.variables[self.variable].shape
+                ):
                     # Default cmap
                     cmap = "jet"
                     if st.sidebar.checkbox("Choose cmap"):
                         # Choose a cmap
                         type_cmap = st.sidebar.radio(
-                            "cmap types", self.configfile['default']['cmap_types']
+                            "cmap types", self.configfile["default"]["cmap_types"]
                         )
                         cmap = st.sidebar.selectbox(
                             "cmap",
@@ -331,7 +359,7 @@ class Ncpyviewer:
                     cmap = "jet"
                     if st.sidebar.checkbox("Choose cmap"):
                         type_cmap = st.sidebar.radio(
-                            "cmap type", self.configfile['default']['cmap_types']
+                            "cmap type", self.configfile["default"]["cmap_types"]
                         )
                         cmap = st.sidebar.selectbox(
                             "cmap",
@@ -395,7 +423,7 @@ class Ncpyviewer:
                 axis = 0 if axis else 1
                 # default line
                 if "line" not in kargs:
-                    kargs["line"] = self.configfile['default']['lines']
+                    kargs["line"] = self.configfile["default"]["lines"]
 
                 fig = go.Figure()
                 # Create and style traces
@@ -521,9 +549,7 @@ class Ncpyviewer:
                     ],
                 )
                 if self.dataset.variables[axe].shape[0] != dataset.shape[stat_axis]:
-                    st.error(
-                        f"Shape mismatch"
-                    )
+                    st.error(f"Shape mismatch")
                     st.stop()
                 if st.checkbox("min"):
                     plot_stat(self.variable, dataset, "min", axe, stat_axis)
@@ -575,5 +601,6 @@ def main():
         ncviewer.stats()
     ncviewer.close_file()
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     main()
