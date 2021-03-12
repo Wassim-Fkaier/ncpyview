@@ -48,9 +48,10 @@ class Ncpyviewer:
     and visualize them.
     """
 
-    configfile_path = pkg_resources.resource_filename(
-        __package_name__, os.path.join("etc", "config.json")
-    )
+    # configfile_path = pkg_resources.resource_filename(
+    #     __package_name__, os.path.join("etc", "config.json")
+    # )
+    configfile_path = os.path.join("etc", "config.json")
     # Dictionnary which contains functions to compute statistics
     dict_funcs = {
         "min": lambda dataset, axis: np.nanmin(dataset, axis=axis),
