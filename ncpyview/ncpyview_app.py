@@ -47,10 +47,12 @@ class Ncpyviewer:
     This class method reads data from netcdf, calculates the statistics
     and visualize them.
     """
-
-    configfile_path = pkg_resources.resource_filename(
-        __package_name__, os.path.join("etc", "config.json")
-    )
+    try:
+        configfile_path = pkg_resources.resource_filename(
+            __package_name__, os.path.join("etc", "config.json")
+        )
+    except:
+        configfile_path = None
     default_configfile = {
     "default":{
         "cmap_types":["cyclical", "diverging", "sequential"],
@@ -174,7 +176,8 @@ class Ncpyviewer:
         None.
 
         """
-        if os.path.isfile(self.configfile_path):
+
+        if self.configfile_path is not None and os.path.isfile(self.configfile_path):
             with open(self.configfile_path, "r") as config_file:
                 self.configfile = json.load(config_file)
         else:
