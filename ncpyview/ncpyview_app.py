@@ -48,10 +48,16 @@ class Ncpyviewer:
     and visualize them.
     """
 
-    # configfile_path = pkg_resources.resource_filename(
-    #     __package_name__, os.path.join("etc", "config.json")
-    # )
-    configfile_path = "config.json"
+    configfile_path = pkg_resources.resource_filename(
+        __package_name__, os.path.join("etc", "config.json")
+    )
+    default_configfile = {
+    "default":{
+        "cmap_types":["cyclical", "diverging", "sequential"],
+        "lines":{"color":"black", "width":2.8, "dash":"dot"}
+        }
+    }
+
     # Dictionnary which contains functions to compute statistics
     dict_funcs = {
         "min": lambda dataset, axis: np.nanmin(dataset, axis=axis),
@@ -168,8 +174,11 @@ class Ncpyviewer:
         None.
 
         """
-        with open(self.configfile_path, "r") as config_file:
-            self.configfile = json.load(config_file)
+        if os.path.isfile(self.configfile_path):
+            with open(self.configfile_path, "r") as config_file:
+                self.configfile = json.load(config_file)
+        else:
+            self.configfile = self.default_configfile
 
     def show_file_attributes(self):
         """

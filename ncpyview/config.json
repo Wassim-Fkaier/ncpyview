@@ -1,6 +1,0 @@
-{
-"default":{
-    "cmap_types":["cyclical", "diverging", "sequential"], 
-    "lines":{"color":"black", "width":2.8, "dash":"dot"}
-    }
-}
