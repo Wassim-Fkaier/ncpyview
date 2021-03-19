@@ -11,7 +11,7 @@ __status__ = "Dev"
 
 import pkg_resources
 import subprocess
-from .readparam import parserarg
+from ncpyview.parserarg import parsearg_func
 
 
 def main():
@@ -24,7 +24,7 @@ def main():
 
     """
     # Try to parse files paths
-    ncfiles = parserarg.parsearg_func()["ncfiles"]
+    ncfiles = parsearg_func()["ncfiles"]
     # Get the path of the ncpyview_app.py script
     script_path = pkg_resources.resource_filename("ncpyview", "ncpyview_app.py")
     # if not parsed files paths

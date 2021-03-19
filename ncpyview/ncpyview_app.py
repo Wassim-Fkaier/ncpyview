@@ -20,7 +20,7 @@ import plotly.express as plotly_express
 import plotly.graph_objects as go
 import json
 import pkg_resources
-import parserarg
+from ncpyview.parserarg import parsearg_func
 
 
 @st.cache(hash_funcs={xarray.core.dataset.Dataset: id}, allow_output_mutation=True)
@@ -47,6 +47,7 @@ class Ncpyviewer:
     This class method reads data from netcdf, calculates the statistics
     and visualize them.
     """
+
     try:
         configfile_path = pkg_resources.resource_filename(
             __package_name__, os.path.join("etc", "config.json")
@@ -54,9 +55,9 @@ class Ncpyviewer:
     except:
         configfile_path = None
     default_configfile = {
-    "default":{
-        "cmap_types":["cyclical", "diverging", "sequential"],
-        "lines":{"color":"black", "width":2.8, "dash":"dot"}
+        "default": {
+            "cmap_types": ["cyclical", "diverging", "sequential"],
+            "lines": {"color": "black", "width": 2.8, "dash": "dot"},
         }
     }
 
@@ -126,7 +127,7 @@ class Ncpyviewer:
         """
 
         # Try to parse arguments from the command line
-        args = parserarg.parsearg_func()
+        args = parsearg_func()
         files_from_cmd = args["ncfiles"]
         # Request to upload files
         ncfiles = st.file_uploader(
@@ -368,12 +369,18 @@ class Ncpyviewer:
                     dataset = eval(
                         f"self.dataset[self.variable].loc[dict({dim}=dim_value)]"
                     )
-
+                    # Set the min/max values of the colorbar
+                    zmin = st.sidebar.number_input("Vmin")
+                    zmax = st.sidebar.number_input("Vmax")
                     cmap = "jet"
                     if st.sidebar.checkbox("Choose cmap"):
                         type_cmap = st.sidebar.radio(
                             "cmap type", self.configfile["default"]["cmap_types"]
                         )
+                        st.sidebar.write(
+                            "check out this [link](https://plotly.com/python/builtin-colorscales/#builtin-sequential-color-scales) for more details about cmap list"
+                        )
+
                         cmap = st.sidebar.selectbox(
                             "cmap",
                             [
@@ -393,9 +400,11 @@ class Ncpyviewer:
                         dataset,
                         color_continuous_scale=cmap,
                         origin="lower",
+                        zmin=zmin,
+                        zmax=zmax,
                         title=f"2D plot of {self.variable} in {dim} = {dim_value} {dim_unit}",
                     )
-                    fig.update_layout(plot_bgcolor="white")
+                    fig.update_layout(plot_bgcolor="white", width=900, height=750)
                     st.plotly_chart(fig, use_container_width=True)
                 else:
                     st.error("The maximum allowed dataset dimension is 3 dimension")
