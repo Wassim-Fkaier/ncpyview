@@ -381,9 +381,6 @@ class Ncpyviewer:
                         type_cmap = st.sidebar.radio(
                             "cmap type", self.configfile["default"]["cmap_types"]
                         )
-                        st.sidebar.write(
-                            "check out this [link](https://plotly.com/python/builtin-colorscales/#builtin-sequential-color-scales) for more details about cmap list"
-                        )
 
                         cmap = st.sidebar.selectbox(
                             "cmap",
@@ -392,6 +389,9 @@ class Ncpyviewer:
                                 for c in dir(eval(f"plotly_express.colors.{type_cmap}"))
                                 if c[0] != "_"
                             ],
+                        )
+                        st.sidebar.write(
+                            "check out this [link](https://plotly.com/python/builtin-colorscales/#builtin-sequential-color-scales) for more details about cmap list"
                         )
                     # Check units
                     if hasattr(self.dataset[dim], "units"):
