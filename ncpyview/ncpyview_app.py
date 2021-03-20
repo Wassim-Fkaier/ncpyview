@@ -20,7 +20,11 @@ import plotly.express as plotly_express
 import plotly.graph_objects as go
 import json
 import pkg_resources
-from ncpyview.parserarg import parsearg_func
+
+try:
+    from parserarg import parsearg_func
+except Exception:
+    from ncpyview.parserarg import parsearg_func
 
 
 @st.cache(hash_funcs={xarray.core.dataset.Dataset: id}, allow_output_mutation=True)

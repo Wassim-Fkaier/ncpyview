@@ -11,7 +11,11 @@ __status__ = "Dev"
 
 import pkg_resources
 import subprocess
-from ncpyview.parserarg import parsearg_func
+
+try:
+    from parserarg import parsearg_func
+except Exception:
+    from ncpyview.parserarg import parsearg_func
 
 
 def main():
