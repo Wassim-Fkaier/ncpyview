@@ -56,13 +56,13 @@ Installation
 Run the application
 ===================
 
-Open a terminal and tape;
+Open a terminal and run the application;
 
 .. code-block:: bash
 
         ncpyview
 
-This will open the application on the browser.
+This will open the application locally.
 
 Now the files can be uploaded to read and visualize data.
 
