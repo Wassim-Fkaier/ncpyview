@@ -14,6 +14,7 @@
 # import sys
 # sys.path.insert(0, os.path.abspath('.'))
 
+# import link
 
 # -- Project information -----------------------------------------------------
 
@@ -49,3 +50,11 @@ html_theme = "sphinx_rtd_theme"
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
 html_static_path = ["_static"]
+
+
+
+# link_name = "video1_exemple"
+# user_text = "Video"
+# url = "https://www.youtube.com/watch?v=jUjQIiCCvcg"
+
+# link.xref_links.update({link_name: (user_text, url)})
