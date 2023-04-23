@@ -6,7 +6,7 @@ This module creates an interactive aplication using the streamlit framework
 """
 __author__ = "Wassim Fkaier"
 __maintainer__ = "Wassim Fkaier"
-__email__ = "Wassim Fkaier@outlook.com"
+__email__ = "wassim.fkaier@outlook.com"
 __status__ = "Dev"
 __package_name__ = "ncpyview"
 
@@ -27,7 +27,8 @@ except Exception:
     from ncpyview.parserarg import parsearg_func
 
 
-@st.cache(hash_funcs={xarray.core.dataset.Dataset: id}, allow_output_mutation=True)
+#@st.cache(hash_funcs={xarray.core.dataset.Dataset: id}, allow_output_mutation=True)
+@st.cache_data
 def readnc(filename):
     """
     This function reads a netcdf file and returns it as a Dataset object.
@@ -327,7 +328,7 @@ class Ncpyviewer:
                 else:
                     self.dataset[self.variable] = self.dataset[self.variable][:, :, 0]
 
-            with st.beta_container():
+            with st.container():
                 # 2D variable
                 if (
                     len(self.dataset.variables[self.variable].shape) == 2
