@@ -56,7 +56,7 @@ Installation
 Run the application
 ===================
 
-Open a terminal and execute the program;
+Open a terminal and run the app;
 
 .. code-block:: bash
 
