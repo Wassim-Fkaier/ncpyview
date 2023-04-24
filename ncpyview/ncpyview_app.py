@@ -476,7 +476,7 @@ class Ncpyviewer:
                 else:
                     y_unit = None
                 fig.update_layout(
-                    title=f"{stat} sla",
+                    title=f"{stat}",
                     xaxis_title=f"{str(axe)} ({x_unit})"
                     if x_unit is not None
                     else str(axe),
@@ -508,7 +508,7 @@ class Ncpyviewer:
                     != self.dataset[self.variable].shape[stat_axis]
                 ):
                     st.error(
-                        f"PLease choose an absice which his lenght equal to the number of the time series of {self.variable} variable"
+                        f"The x axis variable must have the same lenght as {self.variable} variable"
                     )
                     st.stop()
 
