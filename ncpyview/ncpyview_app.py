@@ -149,7 +149,7 @@ class Ncpyviewer:
         if not ncfiles:
             # initialize a dict
             ncfiles = {}
-        # at least a file path hase been parsed
+        # at least a file path has been parsed
         if files_from_cmd is not None:
             for file_path in files_from_cmd:
                 ncfiles[file_path.split("/")[-1]] = file_path
